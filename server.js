@@ -1,8 +1,8 @@
-//server.js
+// server.js
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
-const cors = require("cors"); // <--- IMPORTANTE
+const cors = require("cors");
 
 const app = express();
 
@@ -10,16 +10,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Pasta padrão de download (pode ser configurada pelo usuário)
-// const PASTA_DOWNLOAD = "C:/DownloadsInC"; // alterar se quiser
+// Pasta padrão de download
 const PASTA_DOWNLOAD = path.join(__dirname, "DownloadsInC");
-if (!fs.existsSync(PASTA_DOWNLOAD)) fs.mkdirSync(PASTA_DOWNLOAD, { recursive: true });
+if (!fs.existsSync(PASTA_DOWNLOAD)) {
+  fs.mkdirSync(PASTA_DOWNLOAD, { recursive: true });
+}
+
+// Rota de teste no navegador
+app.get("/", (req, res) => {
+  res.send("🚀 Servidor está rodando! Use POST em /baixar para baixar PDFs.");
+});
 
 // Endpoint para baixar PDF
 app.post("/baixar", async (req, res) => {
   try {
     let { url, filename, cookies } = req.body;
-    if (!url || !filename) return res.status(400).send("url e filename são obrigatórios");
+    if (!url || !filename) {
+      return res.status(400).send("url e filename são obrigatórios");
+    }
 
     // Corrige URL relativa -> absoluta
     if (!url.startsWith("http")) {
@@ -30,7 +38,9 @@ app.post("/baixar", async (req, res) => {
       headers: cookies ? { "Cookie": cookies } : {}
     });
 
-    if (!response.ok) return res.status(response.status).send("Erro ao baixar o PDF");
+    if (!response.ok) {
+      return res.status(response.status).send("Erro ao baixar o PDF");
+    }
 
     const arrayBuffer = await response.arrayBuffer();
     const filePath = path.join(PASTA_DOWNLOAD, filename);
@@ -45,7 +55,8 @@ app.post("/baixar", async (req, res) => {
   }
 });
 
-
+// Inicia servidor
 const PORT = 3000;
-app.listen(PORT, () => console.log(`Servidor local rodando em http://localhost:${PORT}`));
-
+app.listen(PORT, () => {
+  console.log(`Servidor local rodando em http://localhost:${PORT}`);
+});
