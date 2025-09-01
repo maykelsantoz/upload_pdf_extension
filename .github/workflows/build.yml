@@ -1,0 +1,35 @@
+name: Build DownloadPDFServer.exe
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-exe:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências
+        run: npm install
+
+      - name: Instalar pkg global
+        run: npm install -g pkg
+
+      - name: Gerar o .exe com pkg
+        run: pkg --targets node18-win-x64 --output DownloadPDFServer.exe server.js
+
+      - name: Upload do artefato
+        uses: actions/upload-artifact@v3
+        with:
+          name: DownloadPDFServer
+          path: DownloadPDFServer.exe
