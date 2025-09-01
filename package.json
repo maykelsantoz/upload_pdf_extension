@@ -1,7 +1,7 @@
 {
   "name": "upload_pdf_extension",
   "version": "1.0.0",
-  "description": "",
+  "description": "Servidor local para download de PDFs via extensão Chrome",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
