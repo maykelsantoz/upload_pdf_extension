@@ -1,10 +1,9 @@
 {
   "name": "upload_pdf_extension",
   "version": "1.0.0",
-  "description": "Servidor local para download de PDFs via extensão Chrome",
+  "description": "Servidor local para baixar PDFs via extensão",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "keywords": [],
@@ -12,7 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "node-fetch": "^3.3.2"
+    "express": "^5.1.0"
   }
 }
